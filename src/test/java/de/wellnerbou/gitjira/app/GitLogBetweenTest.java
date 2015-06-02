@@ -23,7 +23,7 @@ public class GitLogBetweenTest {
 	public void testGetGitLogBetween() throws Exception {
 		Repository repository = openMyRepository();
 		GitLogBetween gitLogBetween = new GitLogBetween(repository);
-		final Iterable<RevCommit> res = gitLogBetween.getGitLogBetween("origin/release/6.22", "origin/release/6.23");
+		final Iterable<RevCommit> res = gitLogBetween.getGitLogBetween("origin/470fb2e793c8f7974f3408e22d7b0322a8e5e702", "origin/60328b5bc789ef04eba5fb280e53a491bd8688d5");
 
 		assertThat(res).isNotNull();
 	}
