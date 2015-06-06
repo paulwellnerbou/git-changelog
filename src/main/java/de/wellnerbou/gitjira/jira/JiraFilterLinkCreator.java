@@ -1,7 +1,8 @@
-package de.wellnerbou.gitjira.app;
+package de.wellnerbou.gitjira.jira;
+
+import com.google.common.base.Joiner;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 public class JiraFilterLinkCreator {
 
@@ -16,6 +17,6 @@ public class JiraFilterLinkCreator {
 	}
 
 	protected String createjoinedTickets(Collection<String> tickets) {
-		return tickets.stream().map(i -> i).collect(Collectors.joining(","));
+		return Joiner.on(",").join(tickets);
 	}
 }

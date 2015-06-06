@@ -1,5 +1,6 @@
-package de.wellnerbou.gitjira.app;
+package de.wellnerbou.gitjira.jira;
 
+import de.wellnerbou.gitjira.jira.JiraFilterLinkCreator;
 import org.junit.Test;
 
 import java.util.Arrays;

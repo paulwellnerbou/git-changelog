@@ -1,5 +1,7 @@
-package de.wellnerbou.gitjira.app;
+package de.wellnerbou.gitjira.jira;
 
+import com.google.common.collect.ImmutableSet;
+import de.wellnerbou.gitjira.model.CommitDataModel;
 import org.eclipse.jgit.revwalk.RevCommit;
 
 import java.util.ArrayList;
@@ -19,12 +21,12 @@ public class JiraTicketExtractor {
 		this.validJiraProjectPrefixes = validJiraProjectPrefixes;
 	}
 
-	public Collection<String> extract(Iterable<RevCommit> revs) {
+	public Collection<String> extract(Iterable<CommitDataModel> commits) {
 		Collection<String> result = new ArrayList<>();
-		for(RevCommit revCommit : revs) {
-			result.addAll(extract(revCommit.getFullMessage()));
+		for(CommitDataModel commit : commits) {
+			result.addAll(extract(commit.getFullMessage()));
 		}
-		return result;
+		return ImmutableSet.copyOf(result);
 	}
 
 	protected Collection<String> extract(String commitMessage) {
