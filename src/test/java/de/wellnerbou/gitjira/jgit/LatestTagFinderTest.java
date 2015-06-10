@@ -24,11 +24,17 @@ public class LatestTagFinderTest {
 	public void findLatestTag() throws GitAPIException {
 		Optional<Ref> ref = latestTagFinder.findRef();
 		Assertions.assertThat(ref.isPresent()).isTrue();
-		Assertions.assertThat(ref.get().getName()).endsWith("test-tag");
+		Assertions.assertThat(ref.get().getName()).endsWith("test-tag-newer");
 	}
 
 	@Test
 	public void findLatestTagStartingFromOther() throws GitAPIException {
+		Optional<Ref> ref = latestTagFinder.startingFrom("test-tag-newer").findRef();
+		Assertions.assertThat(ref.get().getName()).endsWith("test-tag");
+	}
+
+	@Test
+	public void findLatestTagStartingFromOldest() throws GitAPIException {
 		Optional<Ref> ref = latestTagFinder.startingFrom("test-tag").findRef();
 		Assertions.assertThat(ref.isPresent()).isFalse();
 	}
