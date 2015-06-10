@@ -4,9 +4,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * @author Paul Wellner Bou <pwb@faz.net>
- */
 public class GitJiraTest {
 
 	@Test
