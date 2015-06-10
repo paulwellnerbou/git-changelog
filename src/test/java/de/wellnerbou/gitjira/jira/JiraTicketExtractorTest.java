@@ -1,7 +1,6 @@
 package de.wellnerbou.gitjira.jira;
 
 import com.google.common.collect.Lists;
-import de.wellnerbou.gitjira.jira.JiraTicketExtractor;
 import de.wellnerbou.gitjira.model.CommitDataModel;
 import org.eclipse.jgit.lib.AnyObjectId;
 import org.eclipse.jgit.lib.ObjectId;
