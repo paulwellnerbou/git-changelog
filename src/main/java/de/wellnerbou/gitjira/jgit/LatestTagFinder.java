@@ -3,7 +3,6 @@ package de.wellnerbou.gitjira.jgit;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
@@ -11,7 +10,6 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevWalk;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -50,7 +48,7 @@ public class LatestTagFinder {
 				if(refFound) {
 					return true;
 				} else {
-					refFound = ref.getName().equals("refs/tag/"+tagName);
+					refFound = ref.getName().equals("refs/tags/"+tagName);
 					return false;
 				}
 			}
@@ -71,15 +69,15 @@ public class LatestTagFinder {
 		}
 
 		public int compare(Ref o1, Ref o2) {
-			java.util.Date d1;
-			java.util.Date d2;
+			Integer d1;
+			Integer d2;
 			try {
-				d1 = walk.parseTag(o1.getObjectId()).getTaggerIdent().getWhen();
-				d2 = walk.parseTag(o2.getObjectId()).getTaggerIdent().getWhen();
+				d1 = walk.parseCommit(o1.getObjectId()).getCommitTime();
+				d2 = walk.parseCommit(o2.getObjectId()).getCommitTime();
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
-			return d1.compareTo(d2);
+			return d2.compareTo(d1);
 		}
 	}
 }

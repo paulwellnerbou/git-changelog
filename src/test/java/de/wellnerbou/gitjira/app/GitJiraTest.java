@@ -8,8 +8,13 @@ public class GitJiraTest {
 
 	@Test
 	public void testMain() throws Exception {
+		final String[] args = new String[] { "--repo", "/home/paul/src/fazcore", "--jirabaseurl", "http://jira.faz.net", "--jiraprefix=SUPPORT", "--jiraprefix=FTK", "origin/release/6.24", "origin/develop" };
+		GitJira.main(args);
+	}
 
-		final String[] args = new String[] { "--repo", "/home/paul/src/fazcore", "--jirabaseurl", "http://jira.faz.net", "--jiraprefix=SUPPORT", "--jiraprefix=FTK", "origin/release/6.22", "origin/release/6.23" };
+	@Test
+	public void testMainWithOneRevGiven() throws Exception {
+		final String[] args = new String[] { "--repo", "/home/paul/src/fazcore", "--jirabaseurl", "http://jira.faz.net", "--jiraprefix=SUPPORT", "--jiraprefix=FTK", "origin/develop" };
 		GitJira.main(args);
 	}
 }

@@ -12,10 +12,18 @@ import static org.assertj.core.api.Assertions.*;
 public class GitLogBetweenTest {
 
 	@Test
-	public void testGetGitLogBetween() throws Exception {
+	public void testGetGitLogBetweenBranches() throws Exception {
 		Repository repository = RepositoryHelper.openMyRepository();
 		GitLogBetween gitLogBetween = new GitLogBetween(repository, new CommitDataModelMapper());
 		final Iterable<CommitDataModel> res = gitLogBetween.getGitLogBetween("origin/test-branch", "origin/master");
+		assertThat(res).isNotNull();
+	}
+
+	@Test
+	public void testGetGitLogBetweenHeadAndTag() throws Exception {
+		Repository repository = RepositoryHelper.openMyRepository();
+		GitLogBetween gitLogBetween = new GitLogBetween(repository, new CommitDataModelMapper());
+		final Iterable<CommitDataModel> res = gitLogBetween.getGitLogBetween("origin/HEAD", "refs/tags/test-tag");
 		assertThat(res).isNotNull();
 	}
 

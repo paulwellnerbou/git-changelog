@@ -23,11 +23,16 @@ public class AppArgs {
 		final OptionSet options = parser.parse(args);
 		repo = (String) options.valueOf("repo");
 
-		if (options.nonOptionArguments().size() != 2) {
-			throw new RuntimeException("Two git paths/revisions expected");
+		if (options.nonOptionArguments().size() < 1) {
+			throw new RuntimeException("At least one git path/revision expected");
 		}
-		fromRev = (String) options.nonOptionArguments().get(0);
-		toRev = (String) options.nonOptionArguments().get(1);
+
+		if(options.nonOptionArguments().size() == 1) {
+			toRev = (String) options.nonOptionArguments().get(0);
+		} else {
+			toRev = (String) options.nonOptionArguments().get(1);
+			fromRev = (String) options.nonOptionArguments().get(0);
+		}
 		jiraPrefixes = (List<String>) options.valuesOf("jiraprefix");
 		jiraBaseUrl = (String) options.valueOf("jirabaseurl");
 	}

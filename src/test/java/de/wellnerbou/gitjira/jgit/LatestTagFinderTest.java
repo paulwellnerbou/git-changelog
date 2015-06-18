@@ -34,6 +34,12 @@ public class LatestTagFinderTest {
 	}
 
 	@Test
+	public void findLatestTagStartingFromHEAD() throws GitAPIException {
+		Optional<Ref> ref = latestTagFinder.startingFrom("origin/HEAD").findRef();
+		Assertions.assertThat(ref.get().getName()).endsWith("test-tag");
+	}
+
+	@Test
 	public void findLatestTagStartingFromOldest() throws GitAPIException {
 		Optional<Ref> ref = latestTagFinder.startingFrom("test-tag").findRef();
 		Assertions.assertThat(ref.isPresent()).isFalse();

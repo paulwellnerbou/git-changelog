@@ -1,4 +1,7 @@
 apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = "de.wellnerbou.gitjira.app.GitJira"
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -14,5 +17,6 @@ dependencies {
     compile 'com.google.guava:guava:18.0'
     compile 'net.sf.jopt-simple:jopt-simple:4.8'
     testCompile "junit:junit:4.11"
-    testCompile 'org.assertj:assertj-core:3.0.0'
+    testCompile 'org.assertj:assertj-core:2.1.0'
+//    testCompile 'org.assertj:assertj-core:3.0.0' for java 8
 }
