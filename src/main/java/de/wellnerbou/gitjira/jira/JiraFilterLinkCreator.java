@@ -9,7 +9,7 @@ public class JiraFilterLinkCreator {
 	private String jiraBaseUrl;
 
 	public JiraFilterLinkCreator(final String jiraBaseUrl) {
-		this.jiraBaseUrl = jiraBaseUrl + (jiraBaseUrl.endsWith("/") ? "" : "/");
+		this.jiraBaseUrl = jiraBaseUrl + (jiraBaseUrl != null && jiraBaseUrl.endsWith("/") ? "" : "/");
 	}
 
 	public String createFilterLink(Collection<String> tickets) {

@@ -1,6 +1,11 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
+group = 'de.wellnerbou'
+version = '0.1-SNAPSHOT'
+
+description = """git-jira-log"""
+
 mainClassName = "de.wellnerbou.gitjira.app.GitJira"
 
 sourceCompatibility = 1.7
@@ -9,6 +14,12 @@ targetCompatibility = 1.7
 repositories {
     jcenter()
     mavenCentral()
+}
+
+run {
+    if ( project.hasProperty('args') ) {
+        args project.args.split('\\s+')
+    }
 }
 
 dependencies {

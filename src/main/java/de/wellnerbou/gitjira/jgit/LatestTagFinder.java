@@ -55,7 +55,7 @@ public class LatestTagFinder {
 		}).toList();
 	}
 
-	public LatestTagFinder startingFrom(final String tagStartingFrom) {
+	public LatestTagFinder startingFromTag(final String tagStartingFrom) {
 		this.tagStartingFrom = tagStartingFrom;
 		return this;
 	}

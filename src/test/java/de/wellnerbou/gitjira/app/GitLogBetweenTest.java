@@ -14,29 +14,19 @@ import static org.assertj.core.api.Assertions.*;
 
 public class GitLogBetweenTest {
 
-	@Test
-	public void testJGitApiToDetectAnnotatedTags() throws IOException {
-		final Repository repository = RepositoryHelper.openMyRepository();
-
-	}
-
-	@Test
-	public void assureTagIsAnnotated() throws IOException {
-		final Repository repository = RepositoryHelper.openMyRepository();
-		GitLogBetween gitLogBetween = new GitLogBetween(repository, new CommitDataModelMapper());
-		final Iterable<CommitDataModel> res = gitLogBetween.getGitLogBetween("refs/tags/annotated-test-tag", "HEAD");
-	}
+	public static final String ANNOTATED_TEST_TAG = "refs/tags/annotated-test-tag";
+	public static final String TEST_BRANCH = "origin/test-branch";
 
 	@Test
 	public void testGetGitLogBetweenBranches() throws Exception {
 		Repository repository = RepositoryHelper.openMyRepository();
 		GitLogBetween gitLogBetween = new GitLogBetween(repository, new CommitDataModelMapper());
-		final Iterable<CommitDataModel> res = gitLogBetween.getGitLogBetween("origin/test-branch", "origin/master");
+		final Iterable<CommitDataModel> res = gitLogBetween.getGitLogBetween(TEST_BRANCH, "origin/master");
 		assertThat(res).isNotNull();
 	}
 
 	@Test
-	public void testGetGitLogBetweenHeadAndTag() throws Exception {
+	public void testGetGitLogBetweenTagAndHead() throws Exception {
 		Repository repository = RepositoryHelper.openMyRepository();
 		GitLogBetween gitLogBetween = new GitLogBetween(repository, new CommitDataModelMapper());
 		final Iterable<CommitDataModel> res = gitLogBetween.getGitLogBetween("refs/tags/test-tag", "HEAD");
@@ -44,13 +34,10 @@ public class GitLogBetweenTest {
 	}
 
 	@Test
-	public void testGetGitLogBetweenHeadAndTagFazcore() throws Exception {
-		Repository repository = RepositoryHelper.openRepository("/home/paul/src/fazcore");
+	public void testGetGitLogBetweenAnnotatedTagAndHead() throws Exception {
+		Repository repository = RepositoryHelper.openMyRepository();
 		GitLogBetween gitLogBetween = new GitLogBetween(repository, new CommitDataModelMapper());
-		final Iterable<CommitDataModel> res = gitLogBetween.getGitLogBetween("refs/tags/fazcore-6.24.0", "HEAD");
-		for(CommitDataModel commitDataModel : res) {
-			System.out.println(commitDataModel);
-		}
+		final Iterable<CommitDataModel> res = gitLogBetween.getGitLogBetween(ANNOTATED_TEST_TAG, "HEAD");
 		assertThat(res).isNotNull();
 	}
 }

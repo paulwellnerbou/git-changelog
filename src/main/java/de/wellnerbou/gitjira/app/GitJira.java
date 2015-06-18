@@ -27,7 +27,7 @@ public class GitJira {
 
 		String fromRev = appArgs.getFromRev();
 		if(fromRev == null) {
-			System.out.println("toRev not given, searching automatically for latest released tag...");
+			System.out.println("Second rev not given, searching automatically for latest released tag as fromRev...");
 			Optional<Ref> latestTag = new LatestTagFinder(repository).findRef();
 			if(latestTag.isPresent()) {
 				System.out.println("Found tag "+latestTag.get().toString());
