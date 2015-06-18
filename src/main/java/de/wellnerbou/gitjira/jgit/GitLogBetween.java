@@ -30,6 +30,7 @@ public class GitLogBetween {
 	private Iterable<RevCommit> getJGitLogBetween(final String rev1, final String rev2) throws IOException, GitAPIException {
 		Ref refFrom = repo.getRef(rev1);
 		Ref refTo = repo.getRef(rev2);
-		return new Git(repo).log().addRange(refFrom.getObjectId(), refTo.getObjectId()).call();
+		refFrom = repo.peel(refFrom);
+		return new Git(repo).log().addRange(refFrom.getPeeledObjectId(), refTo.getObjectId()).call();
 	}
 }

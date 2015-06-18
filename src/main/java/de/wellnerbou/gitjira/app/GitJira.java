@@ -21,7 +21,7 @@ public class GitJira {
 	public static void main(String[] args) throws IOException, GitAPIException {
 		AppArgs appArgs = new AppArgs(args);
 		final File repo = new File(appArgs.getRepo());
-		FileRepositoryBuilder builder = new FileRepositoryBuilder();
+		final FileRepositoryBuilder builder = new FileRepositoryBuilder();
 		final Repository repository = builder.readEnvironment().findGitDir(repo).build();
 		GitLogBetween gitLogBetween = new GitLogBetween(repository, new CommitDataModelMapper());
 
