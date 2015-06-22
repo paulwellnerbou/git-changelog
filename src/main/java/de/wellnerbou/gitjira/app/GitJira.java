@@ -33,7 +33,10 @@ public class GitJira {
 
 		final Iterable<CommitDataModel> revs = gitLogBetween.getGitLogBetween(revRange.fromRev, revRange.toRev);
 		final Collection<String> jiraTickets = new JiraTicketExtractor(appArgs.getJiraPrefixes()).extract(revs);
+
+		System.out.println("-----\r\nJira-Tickets between "+revRange.fromRev+" and "+revRange.toRev+":");
 		System.out.println(new JiraFilterLinkCreator(appArgs.getJiraBaseUrl()).createFilterLink(jiraTickets));
+		System.out.println("-----");
 	}
 
 	private RevRange getRevRange(AppArgs appArgs, Repository repository) {
