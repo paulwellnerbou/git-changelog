@@ -3,6 +3,8 @@ package de.wellnerbou.gitjira.app;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AppArgs {
@@ -29,7 +31,11 @@ public class AppArgs {
 			toRev = (String) options.nonOptionArguments().get(1);
 			fromRev = (String) options.nonOptionArguments().get(0);
 		}
-		jiraPrefixes = (List<String>) options.valuesOf("jiraprefix");
+
+		jiraPrefixes = new ArrayList<>();
+		for(String prefix : (List<String>) options.valuesOf("jiraprefix")) {
+			Collections.addAll(jiraPrefixes, prefix.split(","));
+		}
 		jiraBaseUrl = (String) options.valueOf("jirabaseurl");
 	}
 
