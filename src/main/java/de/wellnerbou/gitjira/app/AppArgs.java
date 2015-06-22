@@ -23,13 +23,9 @@ public class AppArgs {
 		final OptionSet options = parser.parse(args);
 		repo = (String) options.valueOf("repo");
 
-		if (options.nonOptionArguments().size() < 1) {
-			throw new RuntimeException("At least one git path/revision expected");
-		}
-
 		if(options.nonOptionArguments().size() == 1) {
 			toRev = (String) options.nonOptionArguments().get(0);
-		} else {
+		} else if(options.nonOptionArguments().size() >= 2) {
 			toRev = (String) options.nonOptionArguments().get(1);
 			fromRev = (String) options.nonOptionArguments().get(0);
 		}

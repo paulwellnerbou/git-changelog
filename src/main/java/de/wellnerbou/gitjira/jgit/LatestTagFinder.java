@@ -9,6 +9,7 @@ import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevWalk;
 
+import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,24 +24,29 @@ public class LatestTagFinder {
 		this.repository = repository;
 	}
 
-	public Optional<Ref> findRef() throws GitAPIException {
+	public Optional<Ref> findLatestRef() throws RuntimeException {
 		final RevWalk walk = new RevWalk(repository);
-		List<Ref> call = new Git(repository).tagList().call();
+		Optional<Ref> returnValue = Optional.absent();
+		List<Ref> call;
+		try {
+			call = new Git(repository).tagList().call();
+		} catch (GitAPIException e) {
+			throw new RuntimeException(e);
+		}
 		if(!call.isEmpty()) {
 			Collections.sort(call, new RefLatestFirstComparator(walk));
 			if(this.tagStartingFrom != null) {
-				call = findFirstBefore(call, this.tagStartingFrom);
-				if(call.isEmpty()) {
-					return Optional.absent();
-				}
+				call = findLatestBefore(call, this.tagStartingFrom);
 			}
-			return Optional.fromNullable(call.get(0));
-		} else {
-			return Optional.absent();
+			if(!call.isEmpty()) {
+				returnValue = Optional.fromNullable(call.get(0));
+			}
 		}
+		walk.dispose();
+		return returnValue;
 	}
 
-	private List<Ref> findFirstBefore(final List<Ref> refs, final String tagName) {
+	private List<Ref> findLatestBefore(final List<Ref> refs, final String tagName) {
 		return FluentIterable.from(refs).filter(new Predicate<Ref>() {
 			boolean refFound = false;
 			@Override

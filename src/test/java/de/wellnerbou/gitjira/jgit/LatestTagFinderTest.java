@@ -23,27 +23,27 @@ public class LatestTagFinderTest {
 
 	@Test
 	public void findLatestTag() throws GitAPIException {
-		Optional<Ref> ref = latestTagFinder.findRef();
+		Optional<Ref> ref = latestTagFinder.findLatestRef();
 		Assertions.assertThat(ref.isPresent()).isTrue();
 		Assertions.assertThat(ref.get().getName()).endsWith("annotated-test-tag");
 	}
 
 	@Test
 	public void findLatestTagStartingFromOther() throws GitAPIException {
-		Optional<Ref> ref = latestTagFinder.startingFromTag("test-tag-newer").findRef();
+		Optional<Ref> ref = latestTagFinder.startingFromTag("test-tag-newer").findLatestRef();
 		Assertions.assertThat(ref.get().getName()).endsWith("test-tag");
 	}
 
 	@Test
 	@Ignore("Won't work yet as this works only with tags, not with branches")
 	public void findLatestTagStartingFromHEAD() throws GitAPIException {
-		Optional<Ref> ref = latestTagFinder.startingFromTag("origin/master").findRef();
+		Optional<Ref> ref = latestTagFinder.startingFromTag("origin/master").findLatestRef();
 		Assertions.assertThat(ref.get().getName()).endsWith("test-tag");
 	}
 
 	@Test
 	public void findLatestTagStartingFromOldest() throws GitAPIException {
-		Optional<Ref> ref = latestTagFinder.startingFromTag("test-tag").findRef();
+		Optional<Ref> ref = latestTagFinder.startingFromTag("test-tag").findLatestRef();
 		Assertions.assertThat(ref.isPresent()).isFalse();
 	}
 }
