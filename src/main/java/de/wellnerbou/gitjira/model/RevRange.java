@@ -1,4 +1,4 @@
-package de.wellnerbou.gitjira.app;
+package de.wellnerbou.gitjira.model;
 
 public class RevRange {
 	public final String fromRev;

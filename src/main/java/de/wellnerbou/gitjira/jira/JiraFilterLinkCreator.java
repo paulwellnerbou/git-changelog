@@ -13,7 +13,7 @@ public class JiraFilterLinkCreator {
 	}
 
 	public String createFilterLink(Collection<String> tickets) {
-		return jiraBaseUrl + "issues/?jql=key%20in%20(" + createjoinedTickets(tickets) + ")";
+		return jiraBaseUrl + "issues/?jql=key%20in%20%28" + createjoinedTickets(tickets) + "%29";
 	}
 
 	protected String createjoinedTickets(Collection<String> tickets) {

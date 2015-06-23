@@ -1,12 +1,12 @@
 package de.wellnerbou.gitjira.jira;
 
-import com.google.common.collect.ImmutableSet;
 import de.wellnerbou.gitjira.model.CommitDataModel;
-import org.eclipse.jgit.revwalk.RevCommit;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,11 +22,11 @@ public class JiraTicketExtractor {
 	}
 
 	public Collection<String> extract(Iterable<CommitDataModel> commits) {
-		Collection<String> result = new ArrayList<>();
+		Set<String> result = new HashSet<>();
 		for(CommitDataModel commit : commits) {
 			result.addAll(extract(commit.getFullMessage()));
 		}
-		return ImmutableSet.copyOf(result);
+		return result;
 	}
 
 	protected Collection<String> extract(String commitMessage) {

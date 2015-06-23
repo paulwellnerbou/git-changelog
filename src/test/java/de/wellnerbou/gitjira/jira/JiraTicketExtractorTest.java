@@ -34,6 +34,17 @@ public class JiraTicketExtractorTest {
 	}
 
 	@Test
+	public void testExtractRevCommitListWithSameTicketMoreThanOnce() {
+		Iterable<CommitDataModel> commits = Lists.newArrayList(
+				new CommitDataModel("hash1", "[TEST-1234] Fixed Bugs"),
+				new CommitDataModel("hash2", "TEST-1234")
+		);
+		final Collection<String> res = jiraTicketExtractor.extract(commits);
+		assertThat(res).containsOnly("TEST-1234");
+		assertThat(res).hasSize(1);
+	}
+
+	@Test
 	public void testExtractSingleString_oneTicket() throws Exception {
 		final String teststr = "[TEST-1234] Fixed Bugs.";
 		final Collection<String> res = jiraTicketExtractor.extract(teststr);
@@ -54,21 +65,5 @@ public class JiraTicketExtractorTest {
 		final Collection<String> res = jiraTicketExtractor.extract(teststr);
 		assertThat(res).contains("TEST-1234");
 		assertThat(res).contains("ANOTHERPROJECT-345");
-	}
-
-	private class StubRevCommit extends RevCommit {
-		private String fullCommitMessage;
-
-		StubRevCommit(final String fullCommitMessage) {
-			super(new AnyObjectId() {
-				@Override
-				public ObjectId toObjectId() {
-					return ObjectId.zeroId();
-				}
-			});
-			this.fullCommitMessage = fullCommitMessage;
-		}
-
-
 	}
 }

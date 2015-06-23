@@ -20,15 +20,21 @@ public class AppArgsTest {
 	}
 
 	@Test
-	public void testJiraPrefix() {
-		AppArgs appArgs = new AppArgs("--jiraprefix", "PROJ1", "rev1", "rev2");
-		Assertions.assertThat(appArgs.getJiraPrefixes()).isInstanceOf(List.class);
+	public void testJiraProjectPrefix() {
+		AppArgs appArgs = new AppArgs("--projects", "PROJ1", "rev1", "rev2");
+		Assertions.assertThat(appArgs.getJiraProjectPrefixes()).contains("PROJ1");
 	}
 
 	@Test
-	public void testJiraPrefixes() {
-		AppArgs appArgs = new AppArgs("--jiraprefix", "PROJ1", "--jiraprefix", "PROJ2", "rev1", "rev2");
-		Assertions.assertThat(appArgs.getJiraPrefixes()).isInstanceOf(List.class);
+	public void testJiraProjectPrefixes() {
+		AppArgs appArgs = new AppArgs("--projects", "PROJ1", "--projects", "PROJ2", "rev1", "rev2");
+		Assertions.assertThat(appArgs.getJiraProjectPrefixes()).contains("PROJ1", "PROJ2");
+	}
+
+	@Test
+	public void testJiraProjectPrefixesCommaSeparated() {
+		AppArgs appArgs = new AppArgs("--projects", "PROJ1,PROJ2;PROJ3");
+		Assertions.assertThat(appArgs.getJiraProjectPrefixes()).contains("PROJ1", "PROJ2", "PROJ3");
 	}
 
 	@Test

@@ -1,5 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'maven'
 
 group = 'de.wellnerbou'
 version = '0.1-SNAPSHOT'

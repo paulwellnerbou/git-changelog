@@ -16,7 +16,7 @@ public class JiraFilterLinkCreatorTest {
 	public void testCreateFilterLink() {
 		final List<String> ticketList = Arrays.asList("XXX");
 		final String actual = jiraFilterLinkCreator.createFilterLink(ticketList);
-		assertThat(actual).isEqualTo("https://jira.example.com/issues/?jql=key%20in%20(XXX)");
+		assertThat(actual).isEqualTo("https://jira.example.com/issues/?jql=key%20in%20%28XXX%29");
 	}
 
 	@Test

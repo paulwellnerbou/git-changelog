@@ -5,9 +5,6 @@ import com.google.common.collect.FluentIterable;
 import de.wellnerbou.gitjira.model.CommitDataModel;
 import org.eclipse.jgit.revwalk.RevCommit;
 
-/**
- * @author Paul Wellner Bou <pwb@faz.net>
- */
 public class CommitDataModelMapper {
 
 	public Iterable<CommitDataModel> map(final Iterable<RevCommit> jGitLogBetween) {
