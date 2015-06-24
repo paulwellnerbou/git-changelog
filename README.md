@@ -39,6 +39,15 @@ entry point (main() in GitJira) is doing (see https://github.com/paulwellnerbou/
 ./gradlew run -Pargs='--repo=/path/to/src/jenkinsci --baseurl=https://issues.jenkins-ci.org/ --projects=JENKINS'
 ```
 
+This is how the output will look like (or similar, if a newer version is released):
+
+	No revs given, searching automatically for latest released tags...
+	Found toRev tag jenkins-1.617
+	Found fromRev tag jenkins-1.616
+	Jira-Tickets mentioned in commits between jenkins-1.616 and jenkins-1.617:
+	JENKINS-28654,JENKINS-28704,JENKINS-27739
+	https://issues.jenkins-ci.org/issues/?jql=key%20in%20%28JENKINS-28654,JENKINS-28704,JENKINS-27739%29
+
 ## Java
 
 	AppArgs appArgs = new AppArgs();
