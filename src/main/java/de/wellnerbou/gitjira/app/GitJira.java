@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Collection;
 
+/**
+ * Entry point for this library which is used for command line as well.
+ */
 public class GitJira {
 
 	public static void main(String[] args) throws IOException {
@@ -30,18 +33,46 @@ public class GitJira {
 	private final AppArgs appArgs;
 	private final PrintStream out;
 
+	/**
+	 * Creates a new GitJira instance with the given AppArgs.
+	 * {@see AppArgs} for more information about the arguments.
+	 * <p/>
+	 * This will call GitJira(appArgs, System.out), so STDOUT is
+	 * used as default Prinstream for logging.
+	 *
+	 * @param appArgs Arguments for this GitJira instance
+	 */
 	public GitJira(final AppArgs appArgs) {
-		this.appArgs = appArgs;
-		this.out = System.out;
+		this(appArgs, System.out);
 	}
 
+	/**
+	 * Creates a new GitJira instance with the given AppArgs
+	 * and the given PrintStream for logging.
+	 *
+	 * @param appArgs Arguments for this GitJira instance
+	 * @param out     The printstream used for logging and error output.
+	 */
 	public GitJira(final AppArgs appArgs, PrintStream out) {
 		this.appArgs = appArgs;
 		this.out = out;
 	}
 
+	/**
+	 * Calculates the changelog between the two revisions given in AppArgs (or the automatically
+	 * calculated tags if no or only one revision is given).
+	 * <p/>
+	 * Only commits containing a project key given in AppArgs' projects ({@link AppArgs#setJiraProjectPrefixes})
+	 * are considered.
+	 * <p/>
+	 * If no valid git repository is found, JGit will throw an java.lang.IllegalArgumentException: One of setGitDir or setWorkTree must be called.
+	 *
+	 * @return the changelog object containing the {@link Changelog#getFrom()} and {@link Changelog#getTo()}
+	 * revisions and the list of jira tickets found in the commit messages between.
+	 * @throws IOException
+	 */
 	public Changelog changelog() throws IOException {
-		if(appArgs.getJiraProjectPrefixes().isEmpty()) {
+		if (appArgs.getJiraProjectPrefixes().isEmpty()) {
 			out.println("No jira project prefixes given, won't return anything.");
 		}
 
@@ -58,12 +89,18 @@ public class GitJira {
 		final Changelog changelog = new Changelog(revRange.fromRev, revRange.toRev);
 		changelog.addTickets(jiraTickets);
 
-		out.println("Jira-Tickets mentioned in commits between "+revRange.fromRev+" and "+revRange.toRev+":");
+		out.println("Jira-Tickets mentioned in commits between " + revRange.fromRev + " and " + revRange.toRev + ":");
 		out.println(Joiner.on(",").join(changelog.getTickets()));
 
 		return changelog;
 	}
 
+	/**
+	 * Creates the JIRA filter URL prefixed with the JIRA base url ({@link AppArgs#getJiraBaseUrl()}), if any.
+	 *
+	 * @param jiraTickets A collection of (distinct) JIRA tickets, e.g. "PROJ1-123", "PROJ2-234", ...
+	 * @return the escaped url string to the JIRA filter in the format http://jira.base.url/issues/?jql=key%20in%20%28PROJ1-123,PROJ2-234%29"
+	 */
 	public String jiraFilterUrl(final Collection<String> jiraTickets) {
 		final String filterLink = new JiraFilterLinkCreator(appArgs.getJiraBaseUrl()).createFilterLink(jiraTickets);
 		out.println(filterLink);
