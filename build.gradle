@@ -37,11 +37,18 @@ run {
     }
 }
 
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
             artifactId = 'git-jira-log'
+            artifact sourceJar {
+                classifier "sources"
+            }
         }
     }
 }
