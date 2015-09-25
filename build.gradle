@@ -1,6 +1,11 @@
+plugins {
+    id "com.jfrog.bintray" version "1.2"
+}
+
 apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 group = 'de.wellnerbou'
 version = '1.0'
@@ -17,9 +22,27 @@ repositories {
     mavenCentral()
 }
 
+// user and key configuration for bintray deployment:
+// ./gradlew bintrayUpload -PpublishUser=<USER> -PpublishKey=<KEY>
+if (!project.hasProperty("publishUser")) {
+    ext.publishUser = ""
+}
+if (!project.hasProperty("publishKey")) {
+    ext.publishKey = ""
+}
+
 run {
     if ( project.hasProperty('args') ) {
         args project.args.split('\\s+')
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifactId = 'git-jira-log'
+        }
     }
 }
 
@@ -31,4 +54,20 @@ dependencies {
     testCompile "junit:junit:4.11"
     testCompile 'org.assertj:assertj-core:2.1.0'
 //    testCompile 'org.assertj:assertj-core:3.0.0' for java 8
+}
+
+bintray {
+    user = "$publishUser"
+    key = "$publishKey"
+    publications = ['mavenJava']
+
+    dryRun = false
+    publish = true
+
+    pkg {
+        repo = 'maven'
+        name = 'solr-war'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/paulwellnerbou/git-jira-log'
+    }
 }
