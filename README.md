@@ -1,4 +1,4 @@
-# git-jira-log
+# git-changelog
 
 A library and command line tool to extract all JIRA tickets out of commit messages between two GIT revisions and create a URL to the JIRA filter
 showing those commits in JIRA.
@@ -16,7 +16,7 @@ the artifacts into your local <code>.m2/repository</code>:
 
 You can run the application with gradle:
 
-	./gradlew run -Pargs='--repo=/path/to/your/git/repo --baseurl=http://jira.base.url/ --projects=PRJ1,PRJ2' 
+	./gradlew run -Pargs='--processor=jirafilter --repo=/path/to/your/git/repo --baseurl=http://jira.base.url/ --projects=PRJ1,PRJ2'
 
 ## How to use the library
 
@@ -24,7 +24,7 @@ Basically all you have to do is add this as dependency. For maven, this would be
 
         <dependency>
             <groupId>de.wellnerbou</groupId>
-            <artifactId>git-jira-log</artifactId>
+            <artifactId>git-changelog</artifactId>
             <version>VERSION</version>
         </dependency>
         
@@ -36,7 +36,7 @@ entry point (main() in GitJira) is doing (see https://github.com/paulwellnerbou/
 ## Command line
 
 ```
-./gradlew run -Pargs='--repo=/path/to/src/jenkinsci --baseurl=https://issues.jenkins-ci.org/ --projects=JENKINS'
+./gradlew run -Pargs='--processor=jirafilter --repo=/path/to/src/jenkinsci --baseurl=https://issues.jenkins-ci.org/ --projects=JENKINS'
 ```
 
 This is how the output will look like (or similar, if a newer version is released):
@@ -54,6 +54,6 @@ This is how the output will look like (or similar, if a newer version is release
 	appArgs.setJiraBaseUrl("https://issues.jenkins-ci.org/");
 	appArgs.setJiraProjectPrefixes("JENKINS");
 	appArgs.setRepo("/path/to/src/jenkinsci");
-	GitJira gitJira = new GitJira(appArgs);
-	final Changelog changelog = gitJira.changelog();
-	gitJira.jiraFilterUrl(changelog.getTickets());
+	GitJira gitChangelog = new GitJira(appArgs);
+	final Changelog changelog = gitChangelog.changelog();
+	gitChangelog.jiraFilterUrl(changelog.getTickets());

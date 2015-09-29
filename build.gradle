@@ -8,16 +8,17 @@ apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 group = 'de.wellnerbou'
-version = '1.0'
+version = '2.0-SNAPSHOT'
 
-description = """git-jira-log"""
+description = """git-changelog"""
 
-mainClassName = "de.wellnerbou.gitjira.app.GitJira"
+mainClassName = "de.wellnerbou.gitchangelog.app.GitChangelog"
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 repositories {
+    mavenLocal()
     jcenter()
     mavenCentral()
 }
@@ -45,7 +46,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            artifactId = 'git-jira-log'
+            artifactId = 'git-changelog'
             artifact sourceJar {
                 classifier "sources"
             }
@@ -54,8 +55,7 @@ publishing {
 }
 
 dependencies {
-    compile 'org.slf4j:slf4j-api:1.7.7'
-    compile 'org.eclipse.jgit:org.eclipse.jgit:4.0.0.201505260635-rc2'
+    compile ('org.eclipse.jgit:org.eclipse.jgit:4.0.3.201509231615-r')
     compile 'com.google.guava:guava:18.0'
     compile 'net.sf.jopt-simple:jopt-simple:4.8'
     testCompile "junit:junit:4.11"
@@ -73,7 +73,7 @@ bintray {
 
     pkg {
         repo = 'maven'
-        name = 'git-jira-log'
+        name = 'git-changelog'
         licenses = ['MIT']
         vcsUrl = 'https://github.com/paulwellnerbou/git-jira-log'
     }

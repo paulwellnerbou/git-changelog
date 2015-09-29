@@ -1,0 +1,46 @@
+package de.wellnerbou.gitchangelog.processors.basic;
+
+import de.wellnerbou.gitchangelog.app.AppArgs;
+import de.wellnerbou.gitchangelog.model.Changelog;
+import de.wellnerbou.gitchangelog.model.CommitDataModel;
+import de.wellnerbou.gitchangelog.model.RevRange;
+import de.wellnerbou.gitchangelog.processors.ChangelogProcessor;
+import joptsimple.OptionParser;
+import joptsimple.OptionSet;
+
+import java.io.PrintStream;
+
+public class BasicChangelogProcessor implements ChangelogProcessor {
+
+	@Override
+	public String getId() {
+		return "basic";
+	}
+
+	@Override
+	public void provideOptions(final OptionParser optionParser) {
+	}
+
+	@Override
+	public void parseOptions(final AppArgs appArgs, final OptionSet optionSet) {
+	}
+
+	@Override
+	public Changelog processChangelog(final RevRange revRange, final Iterable<CommitDataModel> revisions, final PrintStream out) {
+		Changelog changelog = new Changelog(revRange.fromRev, revRange.toRev);
+		for(final CommitDataModel commitDataModel : revisions) {
+			changelog.addLines("* " + commitDataModel.getShortHash() + "\t" + commitDataModel.getFullMessage());
+		}
+		return changelog;
+	}
+
+	@Override
+	public String generateOutput(final Changelog changelog, final PrintStream out) {
+		StringBuilder stringBuilder = new StringBuilder();
+		for(final String line : changelog.getLines()) {
+			stringBuilder.append(line);
+			out.print(line);
+		}
+		return stringBuilder.toString();
+	}
+}
