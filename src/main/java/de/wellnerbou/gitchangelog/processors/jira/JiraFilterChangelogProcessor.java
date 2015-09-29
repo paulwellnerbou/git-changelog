@@ -4,13 +4,14 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import de.wellnerbou.gitchangelog.app.AppArgs;
 import de.wellnerbou.gitchangelog.model.Changelog;
 import de.wellnerbou.gitchangelog.model.CommitDataModel;
 import de.wellnerbou.gitchangelog.model.RevRange;
 import de.wellnerbou.gitchangelog.processors.ChangelogProcessor;
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionGroup;
+import org.apache.commons.cli.Options;
 
 import java.io.PrintStream;
 import java.util.Collection;
@@ -27,15 +28,15 @@ public class JiraFilterChangelogProcessor implements ChangelogProcessor {
 	}
 
 	@Override
-	public void provideOptions(final OptionParser optionParser) {
-		optionParser.accepts("projects").withRequiredArg().withValuesSeparatedBy(',');
-		optionParser.accepts("baseurl").withRequiredArg().defaultsTo("");
+	public void provideOptions(final Options options) {
+		options.addOption(Option.builder().longOpt("projects").hasArg().required().argName("JIRA project keys").desc("Keys of JIRA project which shall be included in the filter url separated by commas.").build());
+		options.addOption(Option.builder().longOpt("baseurl").hasArg().required().argName("JIRA URL").desc("URL to JIRA instance, e.g. 'https://issues.jenkins.org/").build());
 	}
 
 	@Override
-	public void parseOptions(final AppArgs appArgs, final OptionSet optionSet) {
-		jiraProjectPrefixes = (List<String>) optionSet.valuesOf("projects");
-		jiraBaseUrl = (String) optionSet.valueOf("baseurl");
+	public void parseOptions(final CommandLine commandLine) {
+		jiraBaseUrl = commandLine.getOptionValue("baseurl");
+		setJiraProjectPrefixes(commandLine.getOptionValue("projects"));
 	}
 
 	@Override

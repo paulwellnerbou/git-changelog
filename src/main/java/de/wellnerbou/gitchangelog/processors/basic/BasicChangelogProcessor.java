@@ -1,12 +1,12 @@
 package de.wellnerbou.gitchangelog.processors.basic;
 
-import de.wellnerbou.gitchangelog.app.AppArgs;
 import de.wellnerbou.gitchangelog.model.Changelog;
 import de.wellnerbou.gitchangelog.model.CommitDataModel;
 import de.wellnerbou.gitchangelog.model.RevRange;
 import de.wellnerbou.gitchangelog.processors.ChangelogProcessor;
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.OptionGroup;
+import org.apache.commons.cli.Options;
 
 import java.io.PrintStream;
 
@@ -18,11 +18,13 @@ public class BasicChangelogProcessor implements ChangelogProcessor {
 	}
 
 	@Override
-	public void provideOptions(final OptionParser optionParser) {
+	public void provideOptions(final Options options) {
+
 	}
 
 	@Override
-	public void parseOptions(final AppArgs appArgs, final OptionSet optionSet) {
+	public void parseOptions(final CommandLine commandLine) {
+
 	}
 
 	@Override

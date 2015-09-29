@@ -1,11 +1,6 @@
 package de.wellnerbou.gitchangelog.app;
 
 import de.wellnerbou.gitchangelog.processors.ChangelogProcessor;
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
-
-import java.util.Iterator;
-import java.util.ServiceLoader;
 
 public class AppArgs {
 	protected String repo;

@@ -7,6 +7,7 @@ import de.wellnerbou.gitchangelog.jgit.LatestTagFinder;
 import de.wellnerbou.gitchangelog.model.Changelog;
 import de.wellnerbou.gitchangelog.model.CommitDataModel;
 import de.wellnerbou.gitchangelog.model.RevRange;
+import org.apache.commons.cli.ParseException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
@@ -20,10 +21,19 @@ import java.io.PrintStream;
  */
 public class GitChangelog {
 
-	public static void main(String[] args) throws IOException {
-		GitChangelog gitChangelog = new GitChangelog(new CommandLineAppArgs(args));
-		final Changelog changelog = gitChangelog.changelog();
-		gitChangelog.print(changelog);
+	public static void main(String[] args) throws IOException, RuntimeException, ParseException {
+		final CommandLineAppArgs appArgs = new CommandLineAppArgs();
+		try {
+			appArgs.parse();
+			GitChangelog gitChangelog = new GitChangelog(appArgs);
+			final Changelog changelog = gitChangelog.changelog();
+			gitChangelog.print(changelog);
+		} catch (Exception e) {
+			System.out.println(e.getClass().getSimpleName() + " parsing options: " + e.getMessage());
+			appArgs.printHelp(System.out);
+			System.out.flush();
+			// System.exit(-1);
+		}
 	}
 
 	private final AppArgs appArgs;
@@ -34,7 +44,7 @@ public class GitChangelog {
 	 * {@see AppArgs} for more information about the arguments.
 	 * <p/>
 	 * This will call GitChangelog(appArgs, System.out), so STDOUT is
-	 * used as default Prinstream for logging.
+	 * used as default Printstream for logging.
 	 *
 	 * @param appArgs Arguments for this GitChangelog instance
 	 */

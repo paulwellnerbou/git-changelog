@@ -1,7 +1,7 @@
 # git-changelog
 
-A library and command line tool to extract all JIRA tickets out of commit messages between two GIT revisions and create a URL to the JIRA filter
-showing those commits in JIRA.
+A library and command line tool to extract a changelog out of commit messages between two GIT revisions. This changelog can be postprocessed and converted
+to either an human readable git changelog listing all commits, or a JIRA filter URL.
 
 ## How to build
 
@@ -12,11 +12,38 @@ the artifacts into your local <code>.m2/repository</code>:
 ./gradlew clean build install distZip
 ```
 
+The distribution will be packaged into <code>build/distributions</code>.
+
 ## How to run
 
 You can run the application with gradle:
 
+```
 	./gradlew run -Pargs='--processor=jirafilter --repo=/path/to/your/git/repo --baseurl=http://jira.base.url/ --projects=PRJ1,PRJ2'
+```
+
+Or you can use the unzipped distribution build before:
+
+	./git-changelog --processor=jirafilter --repo=/path/to/your/git/repo --baseurl=http://jira.base.url/ --projects=PRJ1,PRJ2
+
+### Usage
+
+```
+usage: git-changelog [OPTIONS] <revFrom> <revTo>
+    --processor <class name or id>   Available processors: jirafilter,
+                                     basic
+    --repo </path/to/repo>           Path to git repository to use,
+                                     defaults to '.'.
+```
+
+The command line interface is still work in progress, it may be extracted into another library or groovy script and distributed as a separate artifact.
+
+## Postprocessors
+
+At the moment, there are two postprocessors implemented:
+
+* jirafilter: Scans the git changelog for jira tickets and creates an URL to the JIRA filter.
+* basic: Prints a human readable git changelog with short commit hashes and commit messages
 
 ## How to use the library
 
@@ -28,10 +55,10 @@ Basically all you have to do is add this as dependency. For maven, this would be
             <version>VERSION</version>
         </dependency>
         
-Then, import the GitJira class, create an instance of the GitJira object and use it, as the command line
-entry point (main() in GitJira) is doing (see https://github.com/paulwellnerbou/git-jira-log/blob/master/src/main/java/de/wellnerbou/gitjira/app/GitJira.java).
+Then, import the GitChangelog class, create an instance of the GitChangelog object and use it, as the command line
+entry point (main() in GitChangelog) is doing.
 
-# Example: Changelog of [Jenkins]()' latest release
+# Example: Changelog of [Jenkins](http://jenkins-ci.org/)' latest release
 
 ## Command line
 
