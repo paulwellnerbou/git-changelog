@@ -2,7 +2,9 @@ package de.wellnerbou.gitchangelog.app;
 
 import de.wellnerbou.gitchangelog.processors.ChangelogProcessor;
 
-public class AppArgs {
+import java.io.Serializable;
+
+public class AppArgs implements Serializable {
 	protected String repo;
 	protected String fromRev;
 	protected String toRev;

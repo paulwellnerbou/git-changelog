@@ -8,8 +8,9 @@ import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 
 import java.io.PrintStream;
+import java.io.Serializable;
 
-public interface ChangelogProcessor {
+public interface ChangelogProcessor extends Serializable {
 
 	String getId();
 	void provideOptions(final Options options);
