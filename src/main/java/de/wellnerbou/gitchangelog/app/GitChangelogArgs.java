@@ -4,7 +4,7 @@ import de.wellnerbou.gitchangelog.processors.ChangelogProcessor;
 
 import java.io.Serializable;
 
-public class AppArgs implements Serializable {
+public class GitChangelogArgs implements Serializable {
 	protected String repo;
 	protected String fromRev;
 	protected String toRev;

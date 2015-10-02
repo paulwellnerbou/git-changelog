@@ -30,6 +30,7 @@ public class BasicChangelogProcessor implements ChangelogProcessor {
 	@Override
 	public Changelog processChangelog(final RevRange revRange, final Iterable<CommitDataModel> revisions, final PrintStream out) {
 		Changelog changelog = new Changelog(revRange.fromRev, revRange.toRev);
+		out.println("Commits between " + revRange.fromRev + " and " + revRange.toRev + ":");
 		for(final CommitDataModel commitDataModel : revisions) {
 			changelog.addLines("* " + commitDataModel.getShortHash() + "\t" + commitDataModel.getFullMessage());
 		}

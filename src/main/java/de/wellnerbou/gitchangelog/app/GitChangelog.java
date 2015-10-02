@@ -8,6 +8,7 @@ import de.wellnerbou.gitchangelog.model.Changelog;
 import de.wellnerbou.gitchangelog.model.CommitDataModel;
 import de.wellnerbou.gitchangelog.model.RevRange;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.codec.binary.StringUtils;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
@@ -22,9 +23,9 @@ import java.io.PrintStream;
 public class GitChangelog {
 
 	public static void main(String[] args) throws IOException, RuntimeException, ParseException {
-		final CommandLineAppArgs appArgs = new CommandLineAppArgs();
+		final CommandLineGitChangelogArgs appArgs = new CommandLineGitChangelogArgs();
 		try {
-			appArgs.parse();
+			appArgs.parse(args);
 			GitChangelog gitChangelog = new GitChangelog(appArgs);
 			final Changelog changelog = gitChangelog.changelog();
 			gitChangelog.print(changelog);
@@ -32,40 +33,39 @@ public class GitChangelog {
 			System.out.println(e.getClass().getSimpleName() + " parsing options: " + e.getMessage());
 			appArgs.printHelp(System.out);
 			System.out.flush();
-			// System.exit(-1);
 		}
 	}
 
-	private final AppArgs appArgs;
+	private final GitChangelogArgs gitChangelogArgs;
 	private final PrintStream out;
 
 	/**
-	 * Creates a new GitChangelog instance with the given AppArgs.
-	 * {@see AppArgs} for more information about the arguments.
+	 * Creates a new GitChangelog instance with the given GitChangelogArgs.
+	 * {@see GitChangelogArgs} for more information about the arguments.
 	 * <p/>
-	 * This will call GitChangelog(appArgs, System.out), so STDOUT is
+	 * This will call GitChangelog(gitChangelogArgs, System.out), so STDOUT is
 	 * used as default Printstream for logging.
 	 *
-	 * @param appArgs Arguments for this GitChangelog instance
+	 * @param gitChangelogArgs Arguments for this GitChangelog instance
 	 */
-	public GitChangelog(final AppArgs appArgs) {
-		this(appArgs, System.out);
+	public GitChangelog(final GitChangelogArgs gitChangelogArgs) {
+		this(gitChangelogArgs, System.out);
 	}
 
 	/**
-	 * Creates a new GitChangelog instance with the given AppArgs
+	 * Creates a new GitChangelog instance with the given GitChangelogArgs
 	 * and the given PrintStream for logging.
 	 *
-	 * @param appArgs Arguments for this GitChangelog instance
+	 * @param gitChangelogArgs Arguments for this GitChangelog instance
 	 * @param out     The printstream used for logging and error output.
 	 */
-	public GitChangelog(final AppArgs appArgs, PrintStream out) {
-		this.appArgs = appArgs;
+	public GitChangelog(final GitChangelogArgs gitChangelogArgs, PrintStream out) {
+		this.gitChangelogArgs = gitChangelogArgs;
 		this.out = out;
 	}
 
 	/**
-	 * Calculates the changelog between the two revisions given in AppArgs (or the automatically
+	 * Calculates the changelog between the two revisions given in GitChangelogArgs (or the automatically
 	 * calculated tags if no or only one revision is given).
 	 * If no valid git repository is found, JGit will throw an java.lang.IllegalArgumentException: One of setGitDir or setWorkTree must be called.
 	 *
@@ -74,36 +74,40 @@ public class GitChangelog {
 	 * @throws IOException
 	 */
 	public Changelog changelog() throws IOException {
-		final File repo = new File(appArgs.getRepo());
+		final File repo = new File(gitChangelogArgs.getRepo());
 		final FileRepositoryBuilder builder = new FileRepositoryBuilder();
 		final Repository repository = builder.readEnvironment().findGitDir(repo).build();
 		final GitLogBetween gitLogBetween = new GitLogBetween(repository, new CommitDataModelMapper());
 
-		RevRange revRange = getRevRange(appArgs, repository);
+		RevRange revRange = getRevRange(gitChangelogArgs, repository);
 		final Iterable<CommitDataModel> revs = gitLogBetween.getGitLogBetween(revRange.fromRev, revRange.toRev);
 
-		return appArgs.getChangelogProcessor().processChangelog(revRange, revs, out);
+		return gitChangelogArgs.getChangelogProcessor().processChangelog(revRange, revs, out);
 	}
 
 	public String print(final Changelog changelog) {
-		return appArgs.getChangelogProcessor().generateOutput(changelog, out);
+		return gitChangelogArgs.getChangelogProcessor().generateOutput(changelog, out);
 	}
 
-	private RevRange getRevRange(AppArgs appArgs, Repository repository) {
-		String fromRev = appArgs.getFromRev();
-		String toRev = appArgs.getToRev();
-		if (fromRev == null && toRev == null) {
+	private RevRange getRevRange(GitChangelogArgs gitChangelogArgs, Repository repository) {
+		String fromRev = gitChangelogArgs.getFromRev();
+		String toRev = gitChangelogArgs.getToRev();
+		if (isEmptyOrNull(fromRev) && (isEmptyOrNull(toRev))) {
 			out.println("No revs given, searching automatically for latest released tags...");
 			toRev = getLatestTag(null, repository);
 			out.println("Found toRev tag " + toRev);
 			fromRev = getLatestTag(toRev, repository);
 			out.println("Found fromRev tag " + fromRev);
-		} else if (fromRev == null) {
+		} else if (isEmptyOrNull(fromRev)) {
 			out.println("Second rev not given, searching automatically for latest released tag as fromRev...");
 			fromRev = getLatestTag(null, repository);
 			out.println("Found tag " + fromRev);
 		}
 		return new RevRange(fromRev, toRev);
+	}
+
+	private boolean isEmptyOrNull(final String value) {
+		return value == null || value.length() == 0;
 	}
 
 	private String getLatestTag(final String beforeTag, final Repository repository) {

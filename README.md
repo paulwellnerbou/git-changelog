@@ -77,10 +77,10 @@ This is how the output will look like (or similar, if a newer version is release
 
 ## Java
 
-	AppArgs appArgs = new AppArgs();
-	appArgs.setJiraBaseUrl("https://issues.jenkins-ci.org/");
-	appArgs.setJiraProjectPrefixes("JENKINS");
-	appArgs.setRepo("/path/to/src/jenkinsci");
-	GitJira gitChangelog = new GitJira(appArgs);
+	AppArgs gitChangelogArgs = new AppArgs();
+	gitChangelogArgs.setJiraBaseUrl("https://issues.jenkins-ci.org/");
+	gitChangelogArgs.setJiraProjectPrefixes("JENKINS");
+	gitChangelogArgs.setRepo("/path/to/src/jenkinsci");
+	GitJira gitChangelog = new GitJira(gitChangelogArgs);
 	final Changelog changelog = gitChangelog.changelog();
 	gitChangelog.jiraFilterUrl(changelog.getTickets());

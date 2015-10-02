@@ -14,11 +14,11 @@ import java.io.PrintStream;
 import java.util.List;
 import java.util.ServiceLoader;
 
-public class CommandLineAppArgs extends AppArgs {
+public class CommandLineGitChangelogArgs extends GitChangelogArgs {
 	private ServiceLoader<ChangelogProcessor> serviceLoader = ServiceLoader.load(ChangelogProcessor.class);
 	private String[] args;
 
-	public CommandLineAppArgs parse(final String... args) throws ParseException {
+	public CommandLineGitChangelogArgs parse(final String... args) throws ParseException {
 		this.args = args;
 		final Options options = getOptions();
 
