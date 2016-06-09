@@ -29,15 +29,24 @@ public class GitLogBetween {
 	}
 
 	private Iterable<RevCommit> getJGitLogBetween(final String rev1, final String rev2) throws IOException, GitAPIException {
-		final Ref refFrom = repo.getRef(rev1);
-		if(refFrom == null) {
+		final ObjectId from = resolveRev(rev1);
+		if(from == null) {
 			throw new RuntimeException("Ref "+rev1+" not found.");
 		}
-		final Ref refTo = repo.getRef(rev2);
-		if(refTo == null) {
+		final ObjectId to = resolveRev(rev2);
+		if(to == null) {
 			throw new RuntimeException("Ref "+rev2+" not found.");
 		}
-		return new Git(repo).log().addRange(getActualRefObjectId(refFrom), getActualRefObjectId(refTo)).call();
+		return new Git(repo).log().addRange(from, to).call();
+	}
+
+	private ObjectId resolveRev(String rev) throws IOException {
+		Ref ref = repo.getRef(rev);
+		if(ref == null) {
+			return repo.resolve(rev);
+		} else {
+			return getActualRefObjectId(ref);
+		}
 	}
 
 	private ObjectId getActualRefObjectId(Ref ref) {

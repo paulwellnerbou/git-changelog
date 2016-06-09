@@ -37,4 +37,15 @@ public class GitLogBetweenTest {
 		final Iterable<CommitDataModel> res = gitLogBetween.getGitLogBetween(ANNOTATED_TEST_TAG, "HEAD");
 		assertThat(res).isNotNull();
 	}
+
+	@Test
+	public void testGetGitLogBetweenTwoCommitHashes() throws Exception {
+		Repository repository = RepositoryHelper.openMyRepository();
+		GitLogBetween gitLogBetween = new GitLogBetween(repository, new CommitDataModelMapper());
+		final Iterable<CommitDataModel> res = gitLogBetween.getGitLogBetween("f16d2dde1a3dd8d058e07ae2f2b4ae9964191b8f", "1f3f068ebc67153506ae8360cc6ea68aab159248");
+		assertThat(res).isNotNull();
+		for (CommitDataModel commitDataModel : res) {
+			System.out.println(commitDataModel.getHash() + ": " + commitDataModel.getFullMessage());
+		}
+	}
 }
