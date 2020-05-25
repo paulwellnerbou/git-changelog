@@ -41,7 +41,7 @@ public class GitLogBetween {
 	}
 
 	private ObjectId resolveRev(String rev) throws IOException {
-		Ref ref = repo.getRef(rev);
+		Ref ref = repo.findRef(rev);
 		if(ref == null) {
 			return repo.resolve(rev);
 		} else {
@@ -50,9 +50,13 @@ public class GitLogBetween {
 	}
 
 	private ObjectId getActualRefObjectId(Ref ref) {
-		final Ref repoPeeled = repo.peel(ref);
-		if(repoPeeled.getPeeledObjectId() != null) {
-			return repoPeeled.getPeeledObjectId();
+		final Ref repoPeeled;
+		try {
+			repoPeeled = repo.getRefDatabase().peel(ref);
+			if(repoPeeled.getPeeledObjectId() != null) {
+				return repoPeeled.getPeeledObjectId();
+			}
+		} catch (IOException ignored) {
 		}
 		return ref.getObjectId();
 	}
