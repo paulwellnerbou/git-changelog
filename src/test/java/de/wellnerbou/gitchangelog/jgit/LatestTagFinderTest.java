@@ -1,6 +1,5 @@
 package de.wellnerbou.gitchangelog.jgit;
 
-import com.google.common.base.Optional;
 import org.assertj.core.api.Assertions;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Ref;
@@ -10,6 +9,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class LatestTagFinderTest {
 
@@ -23,27 +23,27 @@ public class LatestTagFinderTest {
 
 	@Test
 	@Ignore("Depends on new tags on this repository")
-	public void findLatestTag() throws GitAPIException {
+	public void findLatestTag() {
 		Optional<Ref> ref = latestTagFinder.findLatestRef();
 		Assertions.assertThat(ref.isPresent()).isTrue();
 		Assertions.assertThat(ref.get().getName()).endsWith("1.0");
 	}
 
 	@Test
-	public void findLatestTagStartingFromOther() throws GitAPIException {
+	public void findLatestTagStartingFromOther() {
 		Optional<Ref> ref = latestTagFinder.startingFromTag("test-tag-newer").findLatestRef();
 		Assertions.assertThat(ref.get().getName()).endsWith("test-tag");
 	}
 
 	@Test
 	@Ignore("Won't work yet as this works only with tags, not with branches")
-	public void findLatestTagStartingFromHEAD() throws GitAPIException {
+	public void findLatestTagStartingFromHEAD() {
 		Optional<Ref> ref = latestTagFinder.startingFromTag("origin/master").findLatestRef();
 		Assertions.assertThat(ref.get().getName()).endsWith("test-tag");
 	}
 
 	@Test
-	public void findLatestTagStartingFromOldest() throws GitAPIException {
+	public void findLatestTagStartingFromOldest() {
 		Optional<Ref> ref = latestTagFinder.startingFromTag("test-tag").findLatestRef();
 		Assertions.assertThat(ref.isPresent()).isFalse();
 	}

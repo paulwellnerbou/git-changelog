@@ -1,6 +1,5 @@
 package de.wellnerbou.gitchangelog.app;
 
-import com.google.common.base.Optional;
 import de.wellnerbou.gitchangelog.jgit.CommitDataModelMapper;
 import de.wellnerbou.gitchangelog.jgit.GitLogBetween;
 import de.wellnerbou.gitchangelog.jgit.LatestTagFinder;
@@ -8,7 +7,6 @@ import de.wellnerbou.gitchangelog.model.Changelog;
 import de.wellnerbou.gitchangelog.model.CommitDataModel;
 import de.wellnerbou.gitchangelog.model.RevRange;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.codec.binary.StringUtils;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
@@ -16,6 +14,7 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Optional;
 
 /**
  * Entry point for this library which is used for command line as well.
