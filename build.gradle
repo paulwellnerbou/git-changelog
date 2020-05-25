@@ -1,5 +1,5 @@
 plugins {
-    id "com.jfrog.bintray" version "1.8.0"
+    id "com.jfrog.bintray" version "1.8.5"
 }
 
 apply plugin: 'java'
@@ -32,7 +32,7 @@ if (!project.hasProperty("publishKey")) {
 }
 
 run {
-    if ( project.hasProperty('args') ) {
+    if (project.hasProperty('args')) {
         args project.args.split('\\s+')
     }
 }
@@ -43,13 +43,11 @@ task sourceJar(type: Jar) {
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        MyPublication(MavenPublication) {
             from components.java
-            artifactId = 'git-changelog'
             groupId 'de.wellnerbou'
-            artifact sourceJar {
-                classifier "sources"
-            }
+            artifactId 'git-changelog'
+            version '3.1'
         }
     }
 }
@@ -74,7 +72,7 @@ bintray {
         vcsUrl = 'https://github.com/paulwellnerbou/git-changelog'
     }
 
-    publications = ['mavenJava']
+    publications = ['MyPublication']
 
     dryRun = false
     publish = true
