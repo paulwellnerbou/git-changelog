@@ -1,9 +1,10 @@
 plugins {
-    id "com.jfrog.bintray" version "1.2"
+    id "com.jfrog.bintray" version "1.8.0"
 }
 
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'maven'
 apply plugin: 'maven-publish'
 
 group = 'de.wellnerbou'
@@ -45,6 +46,7 @@ publishing {
         mavenJava(MavenPublication) {
             from components.java
             artifactId = 'git-changelog'
+            groupId 'de.wellnerbou'
             artifact sourceJar {
                 classifier "sources"
             }
@@ -63,15 +65,17 @@ dependencies {
 bintray {
     user = "$publishUser"
     key = "$publishKey"
-    publications = ['mavenJava']
-
-    dryRun = false
-    publish = true
 
     pkg {
+        userOrg = 'paulwellnerbou'
         repo = 'maven'
         name = 'git-changelog'
         licenses = ['MIT']
         vcsUrl = 'https://github.com/paulwellnerbou/git-changelog'
     }
+
+    publications = ['mavenJava']
+
+    dryRun = false
+    publish = true
 }
